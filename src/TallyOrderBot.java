@@ -92,18 +92,17 @@ public class TallyOrderBot {
 		System.out.println("Please enter the name of the person youre adding an order to: ");
 		personName = breader.readLine();
 		
-		if(checkPerson(personName) != null) {
-			p = checkPerson(personName);
-		}
-		else {
+		if(getPerson(personName) == null) {
+			System.out.println("This person is not in database. Adding this person to the database.");
 			p = new Person(personName);
-		
+			persons.add(p);
 		}
 		
 		System.out.println("Please input your brand: ");
 		brandName = breader.readLine();
 		brand.setName(brandName);
-		p.addBrand(brand);
+		getPerson(personName).addBrand(brand);
+		
 		
 		System.out.println("Please enter your orders for this brand followed by the return key. Enter the name of the flavour followed by the number.");
 		
@@ -116,10 +115,9 @@ public class TallyOrderBot {
 			else {
 				flavour = input[0];
 				number = input[1];
-				p.getBrand(brand).addFlavour(flavour, number);
+				getPerson(personName).getBrand(brand).addFlavour(flavour, number);
 			}
 		}
-		persons.add(p);
 	}
 
 	public static void removeOrder() throws IOException {
@@ -133,7 +131,7 @@ public class TallyOrderBot {
 		System.out.println("Please input your name: ");
 		name = breader.readLine();
 
-		if(checkPerson(name) != null) {
+		if(getPerson(name) != null) {
 			System.out.println("This person already exists.");
 		}
 		else {
@@ -148,7 +146,7 @@ public class TallyOrderBot {
 	}
 
 	//checks for whether a person of the name already exists, if they do, return the Person object, else returns null.
-	public static Person checkPerson(String name) {
+	public static Person getPerson(String name) {
 		for(Person p : persons) {
 			if(name.equalsIgnoreCase(p.getName())) {
 				return p;
@@ -165,6 +163,7 @@ public class TallyOrderBot {
 				person1.getBrand(brand1).toStringFlavours();
 			}
 		}
+		System.out.println();
 	}
 
 	public static void showPersons() {

@@ -28,7 +28,7 @@ public class Person {
 	
 	public Brand getBrand(Brand brand) {
 		for(Brand brand1 : brands) {
-			if(brand1.getBrandName().equals(brand.getBrandName())) {
+			if(brand1.getBrandName().equalsIgnoreCase(brand.getBrandName())) {
 				return brand1;
 			}
 		}
