@@ -1,2 +1,2 @@
 # TallyOrderBot-java-repo
- A java program to organise orders!
+ A java CLI program to organise drink orders!
