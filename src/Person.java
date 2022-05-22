@@ -3,6 +3,12 @@ import java.util.ArrayList;
 public class Person {
 	String name;
 	ArrayList<Brand> brands = new ArrayList<Brand>();
+
+	Person(){}
+
+	Person(String name) {
+		this.name = name;
+	}
 	
 	public void setName(String name) {
 		this.name = name;

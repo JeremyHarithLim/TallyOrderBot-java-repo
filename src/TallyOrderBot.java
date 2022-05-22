@@ -12,76 +12,93 @@ public class TallyOrderBot {
 		REMOVEPERSON,
 		ADDORDER,
 		REMOVEORDER,
+		SHOWPERSONS,
 		SHOWTALLY,
 		END;
 	}
 	
 	public static void main(String[] args) throws IOException {
 		menu();
-		/*Person person = getPerson();
-		persons.add(person);
-		addOrder(person);
-		tallyOrders();*/
 	}
 
 	public static void menu() throws IOException{
-		boolean found = false;
-		MenuItem menuChoice = MenuItem.END;
+		boolean menuLoop = true;
+		while(menuLoop){
+			boolean found = false;
+			MenuItem menuChoice = MenuItem.END;
+			System.out.println("Please enter the command you would like to run: ");
+				for(MenuItem menuItem: MenuItem.values()) {
+				System.out.println(menuItem.toString());
+			}
 
-		System.out.println("Please enter the command you would like to run: ");
-		for(MenuItem menuItem: MenuItem.values()) {
-			System.out.println(menuItem.toString());
-		}
-		
-	
-		while(!found) {
-			String input = breader.readLine();
-			
-			for(MenuItem menuItem: MenuItem.values()) {
-				if(input.equalsIgnoreCase(menuItem.toString())) {
-					menuChoice = menuItem;
-					found = true;
+			while(!found) {
+				String input = breader.readLine();
+				
+				for(MenuItem menuItem: MenuItem.values()) {
+					if(input.equalsIgnoreCase(menuItem.toString())) {
+						menuChoice = menuItem;
+						found = true;
+					}
 				}
+				if(!found) {
+					System.out.println("I do not understand that command, please reenter your command: ");
+				}
+				
 			}
-			if(!found) {
-				System.out.println("I do not understand that command, please reenter your command: ");
+
+			switch(menuChoice) {
+				case ADDORDER:
+					addOrder();
+					break;
+				case REMOVEORDER:
+					removeOrder();
+					break;
+				case ADDPERSON:
+					addPerson();
+					break;
+				case REMOVEPERSON:
+					removePerson();
+					break;
+				case SHOWPERSONS:
+					showPersons();
+					break;
+				case SHOWTALLY:
+					showTally();
+					break;
+				case END:
+					menuLoop = false;
+					break;
+				
+				default:
+					break;
 			}
-			
+			System.out.println();
 		}
 
-		switch(menuChoice) {
-			case ADDORDER:
-				addOrder();
-				break;
-			case REMOVEORDER:
-				removeOrder();
-				break;
-			case ADDPERSON:
-				addPerson();
-				break;
-			case REMOVEPERSON:
-				removePerson();
-				break;
-			case SHOWTALLY:
-				showTally();
-				break;
-			case END:
-				break;
-			default:
-				break;
-			
-		}
+		
 	}
 
 	public static void addOrder() throws IOException {
 		//need to check for which person the user is adding an order to
 		// if new person, addPerson, if not, add an order to a current person
+		String personName;
 		String brandName;
 		String flavour;
 		String number;
-		Brand brand = new Brand();
 		String[] input;
-		Person p = new Person();
+		Brand brand = new Brand();
+		Person p;
+
+		System.out.println("Please enter the name of the person youre adding an order to: ");
+		personName = breader.readLine();
+		
+		if(checkPerson(personName) != null) {
+			p = checkPerson(personName);
+		}
+		else {
+			p = new Person(personName);
+		
+		}
 		
 		System.out.println("Please input your brand: ");
 		brandName = breader.readLine();
@@ -102,40 +119,57 @@ public class TallyOrderBot {
 				p.getBrand(brand).addFlavour(flavour, number);
 			}
 		}
+		persons.add(p);
 	}
 
-	public static void removeOrder() {
-
+	public static void removeOrder() throws IOException {
+		
 	}
 	
-	public static Person addPerson() throws IOException{
+	public static void addPerson() throws IOException{
 		String name;
-		Person person;
+		Person newPerson;
+
 		System.out.println("Please input your name: ");
 		name = breader.readLine();
-		for(Person person1 : persons) {
-			if(name.equals(person1.getName())) {
-				System.out.println("Accessing "+name+"'s order.");
-				return person1;
-			}
+
+		if(checkPerson(name) != null) {
+			System.out.println("This person already exists.");
 		}
-		person = new Person();
-		person.setName(name);
+		else {
+			newPerson = new Person(name);
+			persons.add(newPerson);
+		}
 		
-		return person;
 	}
 
 	public static void removePerson() {
 
 	}
+
+	//checks for whether a person of the name already exists, if they do, return the Person object, else returns null.
+	public static Person checkPerson(String name) {
+		for(Person p : persons) {
+			if(name.equalsIgnoreCase(p.getName())) {
+				return p;
+			}
+		}
+		return null;	
+	}
 	
 	public static void showTally() {
 		for(Person person1 : persons) {
+			System.out.println(person1.name+"'s order is: ");
 			for(Brand brand1 : person1.getBrandList() ) {
-				System.out.println(person1.name+"'s order is: ");
 				System.out.println(person1.getBrand(brand1).getBrandName());
 				person1.getBrand(brand1).toStringFlavours();
 			}
+		}
+	}
+
+	public static void showPersons() {
+		for(Person p: persons) {
+			System.out.println(p.getName());
 		}
 	}
 
