@@ -16,6 +16,7 @@ public class Brand {
 	public void addFlavour(String name, String numberOfBoxes) {
 		if(flavours.get(name) != null) {
 			
+			//Another implementation that could be used for readability.
 			/*int number = Integer.parseInt(numberOfBoxes);
 			int originalNumber = Integer.parseInt(flavours.get(name));
 			int newTotalNumber = number+originalNumber;*/

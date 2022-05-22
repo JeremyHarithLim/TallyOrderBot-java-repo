@@ -5,19 +5,69 @@ import java.util.*;
 public class TallyOrderBot {
 	static ArrayList<Person> persons = new ArrayList<Person>();
 	static Scanner sc = new Scanner(System.in);
-	
-	public static void main(String[] args) throws IOException {
-		Person person = getPerson();
-		persons.add(person);
-		getOrder(person);
-		tallyOrders();
+	static BufferedReader breader = new BufferedReader(new InputStreamReader(System.in));
+
+	private enum MenuItem {
+		ADDPERSON,
+		REMOVEPERSON,
+		ADDORDER,
+		REMOVEORDER,
+		SHOWTALLY,
+		END;
 	}
 	
-	public static Person getPerson() {
+	public static void main(String[] args) throws IOException {
+		menu();
+		/*Person person = getPerson();
+		persons.add(person);
+		addOrder(person);
+		tallyOrders();*/
+	}
+
+	public static void menu() throws IOException{
+		boolean found = false;
+		MenuItem menuChoice = MenuItem.END;
+
+		System.out.println("Please enter the command you would like to run: ");
+		for(MenuItem menuItem: MenuItem.values()) {
+			System.out.println(menuItem.toString());
+		}
+		
+
+		while(!found) {
+			String input = breader.readLine();
+			for(MenuItem menuItem: MenuItem.values()) {
+				if(input.equalsIgnoreCase(menuItem.toString())) {
+					menuChoice = menuItem;
+					found = true;
+				}
+			}
+		}
+
+		switch(menuChoice) {
+			case ADDORDER:
+				break;
+			case REMOVEORDER:
+				break;
+			case ADDPERSON:
+				break;
+			case REMOVEPERSON:
+				break;
+			case SHOWTALLY:
+				break;
+			case END:
+				break;
+			default:
+				break;
+			
+		}
+	}
+	
+	public static Person getPerson() throws IOException{
 		String name;
 		Person person;
 		System.out.println("Please input your name: ");
-		name = sc.next();
+		name = breader.readLine();
 		for(Person person1 : persons) {
 			if(name.equals(person1.getName())) {
 				System.out.println("Accessing "+name+"'s order.");
@@ -30,8 +80,7 @@ public class TallyOrderBot {
 		return person;
 	}
 	
-	public static void getOrder(Person p) throws IOException {
-		BufferedReader breader = new BufferedReader(new InputStreamReader(System.in));
+	public static void addOrder(Person p) throws IOException {
 		String brandName;
 		String flavour;
 		String number;
@@ -39,13 +88,13 @@ public class TallyOrderBot {
 		String[] input;
 		
 		System.out.println("Please input your brand: ");
-		brandName = sc.next();
+		brandName = breader.readLine();
 		brand.setName(brandName);
-		
 		p.addBrand(brand);
 		
 		System.out.println("Please enter your orders for this brand followed by the return key. Enter the name of the flavour followed by the number.");
 		
+		//need to sanitise inputs
 		while(true) {
 			input = breader.readLine().split(" ");
 			if(input[0].equalsIgnoreCase("done") || input[1].equalsIgnoreCase("done")) {
