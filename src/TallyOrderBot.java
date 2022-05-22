@@ -33,27 +33,37 @@ public class TallyOrderBot {
 			System.out.println(menuItem.toString());
 		}
 		
-
+	
 		while(!found) {
 			String input = breader.readLine();
+			
 			for(MenuItem menuItem: MenuItem.values()) {
 				if(input.equalsIgnoreCase(menuItem.toString())) {
 					menuChoice = menuItem;
 					found = true;
 				}
 			}
+			if(!found) {
+				System.out.println("I do not understand that command, please reenter your command: ");
+			}
+			
 		}
 
 		switch(menuChoice) {
 			case ADDORDER:
+				addOrder();
 				break;
 			case REMOVEORDER:
+				removeOrder();
 				break;
 			case ADDPERSON:
+				addPerson();
 				break;
 			case REMOVEPERSON:
+				removePerson();
 				break;
 			case SHOWTALLY:
+				showTally();
 				break;
 			case END:
 				break;
@@ -62,30 +72,16 @@ public class TallyOrderBot {
 			
 		}
 	}
-	
-	public static Person getPerson() throws IOException{
-		String name;
-		Person person;
-		System.out.println("Please input your name: ");
-		name = breader.readLine();
-		for(Person person1 : persons) {
-			if(name.equals(person1.getName())) {
-				System.out.println("Accessing "+name+"'s order.");
-				return person1;
-			}
-		}
-		person = new Person();
-		person.setName(name);
-		
-		return person;
-	}
-	
-	public static void addOrder(Person p) throws IOException {
+
+	public static void addOrder() throws IOException {
+		//need to check for which person the user is adding an order to
+		// if new person, addPerson, if not, add an order to a current person
 		String brandName;
 		String flavour;
 		String number;
 		Brand brand = new Brand();
 		String[] input;
+		Person p = new Person();
 		
 		System.out.println("Please input your brand: ");
 		brandName = breader.readLine();
@@ -107,8 +103,33 @@ public class TallyOrderBot {
 			}
 		}
 	}
+
+	public static void removeOrder() {
+
+	}
 	
-	public static void tallyOrders() {
+	public static Person addPerson() throws IOException{
+		String name;
+		Person person;
+		System.out.println("Please input your name: ");
+		name = breader.readLine();
+		for(Person person1 : persons) {
+			if(name.equals(person1.getName())) {
+				System.out.println("Accessing "+name+"'s order.");
+				return person1;
+			}
+		}
+		person = new Person();
+		person.setName(name);
+		
+		return person;
+	}
+
+	public static void removePerson() {
+
+	}
+	
+	public static void showTally() {
 		for(Person person1 : persons) {
 			for(Brand brand1 : person1.getBrandList() ) {
 				System.out.println(person1.name+"'s order is: ");
